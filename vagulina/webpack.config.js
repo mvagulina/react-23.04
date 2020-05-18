@@ -40,7 +40,7 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: {
-                localIdentName: '[path][name]__[local]--[hash:base64:5]',
+                localIdentName: "[path][name]__[local]--[hash:base64:5]",
               },
             },
           },
@@ -52,6 +52,9 @@ module.exports = {
     contentBase: path.join(__dirname, "build"),
     compress: true,
     port: 9000,
+    historyApiFallback: {
+      index: "index.html",
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -61,4 +64,5 @@ module.exports = {
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin(),
   ],
+  devtool: 'cheap-inline-module-source-map',
 };

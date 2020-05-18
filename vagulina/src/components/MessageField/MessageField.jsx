@@ -2,48 +2,40 @@ import React, { Component } from "react";
 import Message from "../Message";
 import MessageForm from "../MessageForm";
 import css from "./index.css";
+import PropTypes from "prop-types";
 
-export default class MessageField extends Component {
-  ROBOT_NAME = "Robot";
-  state = {
-    messages: [
-      { text: "Hello!", author: this.ROBOT_NAME },
-      { text: "How do you do?", author: this.ROBOT_NAME },
-    ],
-  };
-
+class MessageField extends Component {
   componentDidMount() {
-//    console.log("MessageField did mount");
+    //    console.log("MessageField did mount");
   }
-
-  componentDidUpdate() {
-//    console.log("MessageField did update");
-    if (
-      this.state.messages[this.state.messages.length - 1].author !== this.ROBOT_NAME
-    ) {
-      this.addNewMessage({ text: "This is bot...", author: this.ROBOT_NAME });
-    }
-  }
-
-  addNewMessage = (message) => {
-    this.setState(({ messages }) => ({
-      messages: [...messages, message],
-    }));
-  };
 
   render() {
-//    console.log(`MessageField render`);
-    const { messages } = this.state;
-    const messageElements = messages.map((message, id) => (
-      <Message key={id} text={message.text} author={message.author} />
+    //    console.log(`MessageField render`);
+    const { chatId, messages, chats, addNewMessage } = this.props;
+
+    const messageElements = chats[chatId].messageList.map((messageId, id) => (
+      <Message
+        key={id}
+        text={messages[messageId].text}
+        author={messages[messageId].author}
+      />
     ));
     return (
       <div className={css.container}>
         <div className={css.elements}>
           {messageElements}
-          <MessageForm addNewMessage={this.addNewMessage} />
+          <MessageForm addNewMessage={addNewMessage} />
         </div>
       </div>
     );
   }
 }
+
+MessageField.propTypes = {
+  chatId: PropTypes.number.isRequired,
+  chats: PropTypes.object.isRequired,
+  messages: PropTypes.object.isRequired,
+  addNewMessage: PropTypes.func.isRequired,
+};
+
+export default MessageField;
